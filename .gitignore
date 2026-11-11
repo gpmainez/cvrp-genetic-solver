@@ -1,0 +1,23 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+
+# IDE files
+.idea/
+.vscode/
+*.user
+
+# Compiled binaries and libraries
+*.exe
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.dylib
+*.so
+
+# Local documentation & scratch files
+docs/TECHNICAL_GUIDE.html
+*.log
