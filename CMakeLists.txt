@@ -30,6 +30,11 @@ target_include_directories(cvrp_lib PUBLIC
 add_executable(cvrp_solver src/main.cpp)
 target_link_libraries(cvrp_solver PRIVATE cvrp_lib)
 
+# Copy benchmark data to build directory so default paths work regardless of working directory
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data")
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/data" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+endif()
+
 # Testing
 option(BUILD_TESTS "Build GoogleTest test suite" ON)
 

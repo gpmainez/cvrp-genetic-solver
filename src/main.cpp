@@ -56,6 +56,24 @@ int main(int argc, char* argv[]) {
     }
 
     if (!std::filesystem::exists(filePath)) {
+        // Fallback 1: check relative to parent directory (e.g. running from cmake-build-debug)
+        if (std::filesystem::exists(std::filesystem::path("..") / filePath)) {
+            filePath = std::filesystem::path("..") / filePath;
+        } else {
+            // Fallback 2: check relative to executable directory
+            std::error_code ec;
+            std::filesystem::path exeDir = std::filesystem::weakly_canonical(std::filesystem::path(argv[0]), ec).parent_path();
+            if (!ec) {
+                if (std::filesystem::exists(exeDir / filePath)) {
+                    filePath = exeDir / filePath;
+                } else if (std::filesystem::exists(exeDir / ".." / filePath)) {
+                    filePath = exeDir / ".." / filePath;
+                }
+            }
+        }
+    }
+
+    if (!std::filesystem::exists(filePath)) {
         std::cerr << "[Error] Benchmark file not found: " << filePath << "\n";
         printUsage(argv[0]);
         return 1;
